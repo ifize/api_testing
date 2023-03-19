@@ -1,6 +1,7 @@
 import requests
 import time
 import csv
+from datetime import datetime
 
 TOKEN = "1d706f2b-d4cf-43cc-8a38-0ad4a8a97887"
 API_URL = "https://analytics.maximum-auto.ru/vacancy-test/api/v0.1"
