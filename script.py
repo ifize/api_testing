@@ -1,7 +1,7 @@
 import requests
 import time
 import csv
-from datetime import datetime
+import datetime
 
 TOKEN = "1d706f2b-d4cf-43cc-8a38-0ad4a8a97887"
 API_URL = "https://analytics.maximum-auto.ru/vacancy-test/api/v0.1"
@@ -39,15 +39,18 @@ def write_to_csv(date_time, value):
         writer.writerow([date_time, value])
 
 while True:
+    print("Creating new report...")
     # Создаем новый отчет
     report_id = str(time.time())
     while not create_report(report_id):
         report_id = str(time.time())
 
     # Запоминаем время создания отчета
-    report_time = time.time()
+    report_time = datetime.datetime.now().timestamp()
+    print(f"Report created at {report_time}...")
 
     # Опрашиваем API до получения готового отчета
+    print("Waiting for report to be ready...")
     while True:
         # Получаем текущее значение отчета
         report_value = get_report(report_id)
@@ -57,8 +60,11 @@ while True:
 
         # Если отчет готов, записываем его в CSV-файл и удаляем его
         write_to_csv(report_time, report_value)
+        print(f"Report value {report_value} written to CSV file...")
         delete_report(report_id)
+        print("Report deleted...")
         break
 
     # Ждем 1 минуту перед созданием нового отчета
+    print("Waiting 1 minute before creating a new report...")
     time.sleep(60)
